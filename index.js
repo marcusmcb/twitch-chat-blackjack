@@ -18,6 +18,7 @@ let playerHandValues = [];
 let dealerHandValues = [];
 let playerCards = [];
 let dealerCards = [];
+let playerCardString = ''
 
 const dealCard = () => {
   const randomIndex = Math.floor(Math.random() * deck.length);
@@ -38,7 +39,6 @@ const setCardValue = (cardValue) => {
 const playGame = () => {
   // "deal" the cards
   let playerCard1 = dealCard();
-  playerCards.push(playerCard1.name);
   let playerCard1Value = setCardValue(playerCard1);
   playerHandValues.push(playerCard1Value);
 
@@ -47,8 +47,7 @@ const playGame = () => {
   let dealerCard1Value = setCardValue(dealerCard1);
   dealerHandValues.push(dealerCard1Value);
 
-  let playerCard2 = dealCard();
-  playerCards.push(playerCard2.name);
+  let playerCard2 = dealCard();  
   let playerCard2Value = setCardValue(playerCard2);
   playerHandValues.push(playerCard2Value);
 
@@ -87,7 +86,7 @@ const playGame = () => {
       //
       dealerHandValue = [12];
       console.log("DEALER HAND VALUE: ", dealerHandValue);
-      while (playerHandValue <= 18) {
+      while (playerHandValue <= 17) {
         let tempCard = dealCard();
         playerCards.push(tempCard.name);
         let nextCard = setCardValue(tempCard);
@@ -95,13 +94,15 @@ const playGame = () => {
         playerHandValue = playerHandValue + nextCard;
         console.log("PHV: ", playerHandValue);
       }
-      if (playerHandValue >= 21) {
+      if (playerHandValue > 21) {
         console.log("Player Cards: ", playerCards);        
         console.log("Dealer Cards: ", dealerCards);        
+        playerCardString = playerCards.join('-')
+        console.log("PLAYER CARD STRING: ", playerCardString)
         console.log(
-          `MCB_ChatBot's upcard shows ${dealerCard2.name} & flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
+          `MCB_ChatBot's upcard shows ${dealerCard2.name}. Player has ${playerCard1.name}-${playerCard2.name} & draws ${playerCardString} for ${playerHandValue}.  Player BUSTS! Dealer flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
         )
-      }
+      }7
     }
   }
 };
