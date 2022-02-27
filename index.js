@@ -38,22 +38,22 @@ const setCardValue = (cardValue) => {
 const playGame = () => {
   // "deal" the cards
   let playerCard1 = dealCard();
-  playerCards.push(playerCard1);
+  playerCards.push(playerCard1.name);
   let playerCard1Value = setCardValue(playerCard1);
   playerHandValues.push(playerCard1Value);
 
   let dealerCard1 = deck[0];
-  dealerCards.push(dealerCard1);
+  dealerCards.push(dealerCard1.name);
   let dealerCard1Value = setCardValue(dealerCard1);
   dealerHandValues.push(dealerCard1Value);
 
   let playerCard2 = dealCard();
-  playerCards.push(playerCard2);
+  playerCards.push(playerCard2.name);
   let playerCard2Value = setCardValue(playerCard2);
   playerHandValues.push(playerCard2Value);
 
   let dealerCard2 = deck[0];
-  dealerCards.push(dealerCard2);
+  dealerCards.push(dealerCard2.name);
   let dealerCard2Value = setCardValue(dealerCard2);
   dealerHandValues.push(dealerCard2Value);
 
@@ -89,15 +89,15 @@ const playGame = () => {
       console.log("DEALER HAND VALUE: ", dealerHandValue);
       while (playerHandValue <= 18) {
         let tempCard = dealCard();
-        playerCards.push(tempCard);
+        playerCards.push(tempCard.name);
         let nextCard = setCardValue(tempCard);
         playerHandValues.push(nextCard);
         playerHandValue = playerHandValue + nextCard;
         console.log("PHV: ", playerHandValue);
       }
       if (playerHandValue >= 21) {
-        console.log("PHVS: ", playerCards);
-        console.log("VALUES: ", Object.values(playerCards))
+        console.log("Player Cards: ", playerCards);        
+        console.log("Dealer Cards: ", dealerCards);        
         console.log(
           `MCB_ChatBot's upcard shows ${dealerCard2.name} & flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
         )
