@@ -11,68 +11,102 @@ let deck = [
   { name: "10", value: 10, count: 4 },
   { name: "J", value: 10, count: 4 },
   { name: "Q", value: 10, count: 4 },
-  { name: "K", value: 10, count: 4 }
-]
+  { name: "K", value: 10, count: 4 },
+];
 
-let playerHandValue = []
-let dealerHandValue = []
+let playerHandValues = [];
+let dealerHandValues = [];
+let playerCards = [];
+let dealerCards = [];
 
 const dealCard = () => {
-  const randomIndex = Math.floor(Math.random() * deck.length)
-  const card = deck[randomIndex]   
-  card.count--  
-  console.log("CARD: ", card)
-  return card
-}
+  const randomIndex = Math.floor(Math.random() * deck.length);
+  const card = deck[randomIndex];
+  card.count--;
+  console.log("CARD: ", card);
+  return card;
+};
 
 const setCardValue = (cardValue) => {
-  if (cardValue.hasOwnProperty('highValue')) {
-    return 11
+  if (cardValue.hasOwnProperty("highValue")) {
+    return 11;
   } else {
-    return cardValue.value
+    return cardValue.value;
   }
-}
+};
 
-const playGame = () => { 
-  
+const playGame = () => {
   // "deal" the cards
-  // let playerCard1 = dealCard()
-  let playerCard1 = deck[0]
-  let playerCard1Value = setCardValue(playerCard1)
-  playerHandValue.push(playerCard1Value)  
+  let playerCard1 = dealCard();
+  playerCards.push(playerCard1);
+  let playerCard1Value = setCardValue(playerCard1);
+  playerHandValues.push(playerCard1Value);
 
-  let dealerCard1 = deck[10]
-  // let dealerCard1 = dealCard()
-  let dealerCard1Value = setCardValue(dealerCard1)
-  dealerHandValue.push(dealerCard1Value)
+  let dealerCard1 = deck[0];
+  dealerCards.push(dealerCard1);
+  let dealerCard1Value = setCardValue(dealerCard1);
+  dealerHandValues.push(dealerCard1Value);
 
-  // let playerCard2 = dealCard()
-  let playerCard2 = deck[11]
-  let playerCard2Value = setCardValue(playerCard2)
-  playerHandValue.push(playerCard2Value) 
+  let playerCard2 = dealCard();
+  playerCards.push(playerCard2);
+  let playerCard2Value = setCardValue(playerCard2);
+  playerHandValues.push(playerCard2Value);
 
-  let dealerCard2 = deck[0]
-  // let dealerCard2 = dealCard()
-  let dealerCard2Value = setCardValue(dealerCard2)
-  dealerHandValue.push(dealerCard2Value)
-  
-  console.log(`Player has ${playerCard1.name}-${playerCard2.name}.`)
-  console.log(`Dealer has ${dealerCard1.name}-${dealerCard2.name}.`)  
-  console.log("PLAYER HAND VALUE: ", playerHandValue)
-  console.log("DEALER HAND VALUE: ", dealerHandValue)
+  let dealerCard2 = deck[0];
+  dealerCards.push(dealerCard2);
+  let dealerCard2Value = setCardValue(dealerCard2);
+  dealerHandValues.push(dealerCard2Value);
 
-  if (dealerCard2.name === 'A') {    
-    if (dealerCard1.name === 'A') {
+  console.log("**************************************************");
+  let playerHandValue = playerHandValues.reduce((a, b) => a + b, 0);
+  let dealerHandValue = dealerHandValues.reduce((a, b) => a + b, 0);
+
+  console.log(
+    `Player has ${playerCard1.name}-${playerCard2.name}, total: ${playerHandValue}.`
+  );
+  console.log(
+    `Dealer has ${dealerCard1.name}-${dealerCard2.name}, total: ${dealerHandValue}.`
+  );
+
+  // check if dealer's upcard is an ace
+  if (dealerCard2.name === "A") {
+    // check if dealer has blackjack
+    if (dealerHandValues[0] + dealerHandValues[1] === 21) {
+      // check if player also has blackjack for a draw
+      if (playerHandValues[0] + playerHandValues[1] === 21) {
+        console.log(
+          `MCB_ChatBot's upcard shows ${dealerCard2.name} & flips over a ${dealerCard1.name} for ${dealerHandValue} (Blackjack!). Player has ${playerCard1.name}-${playerCard2.name} for ${playerHandValue} points (also Blackjack!!). IT'S A DRAW!`
+        );
+      } else {
+        console.log(
+          `MCB_ChatBot's upcard shows ${dealerCard2.name} & flips over a ${dealerCard1.name} for ${dealerHandValue} points (BLACKJACK!). Player has ${playerCard1.name}-${playerCard2.name} for ${playerHandValue} points. MCB_ChatBot wins!`
+        );
+      }
+    }
+    if (dealerCard1.name === "A") {
       //
-    } else if (dealerHandValue[0] + dealerHandValue[1] === 21) {
-      console.log("Dealer has 21!") 
-      if (playerHandValue[0] + playerHandValue[1] === 21)
-      console.log("Player has 21! DRAW!")
+      dealerHandValue = [12];
+      console.log("DEALER HAND VALUE: ", dealerHandValue);
+      while (playerHandValue <= 18) {
+        let tempCard = dealCard();
+        playerCards.push(tempCard);
+        let nextCard = setCardValue(tempCard);
+        playerHandValues.push(nextCard);
+        playerHandValue = playerHandValue + nextCard;
+        console.log("PHV: ", playerHandValue);
+      }
+      if (playerHandValue >= 21) {
+        console.log("PHVS: ", playerCards);
+        console.log("VALUES: ", Object.values(playerCards))
+        console.log(
+          `MCB_ChatBot's upcard shows ${dealerCard2.name} & flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
+        )
+      }
     }
   }
-}
+};
 
-playGame()
+playGame();
 
 // dealer stands on soft 17
 //

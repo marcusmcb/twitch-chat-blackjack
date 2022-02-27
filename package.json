@@ -1,0 +1,20 @@
+{
+  "name": "twitch-chat-blackjack",
+  "version": "1.0.0",
+  "description": "Sandbox repo to work out the logic for a !blackjack command &amp; game in Twitch chat.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcusmcb/twitch-chat-blackjack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcusmcb/twitch-chat-blackjack/issues"
+  },
+  "homepage": "https://github.com/marcusmcb/twitch-chat-blackjack#readme"
+}
