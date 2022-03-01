@@ -23,9 +23,6 @@ let dealerHandValues = []
 // values to hold card strings to be returned in response
 let playerCardString = ''
 let dealerCardString = ''
-// values to hold hand values as they're accumulated
-let playerHandValue = playerHandValues.reduce((a, b) => a + b, 0)
-let dealerHandValue = dealerHandValues.reduce((a, b) => a + b, 0)
 
 const dealCard = () => {
   const randomIndex = Math.floor(Math.random() * deck.length)
@@ -51,6 +48,7 @@ const playGame = () => {
   let dealerCard2 = ''
   // "deal" the cards
   playerCard1 = dealCard()
+  playerCards.push(playerCard1.name)
   let playerCard1Value = setCardValue(playerCard1)
   playerHandValues.push(playerCard1Value)
 
@@ -60,6 +58,7 @@ const playGame = () => {
   dealerHandValues.push(dealerCard1Value)
 
   playerCard2 = dealCard()
+  playerCards.push(playerCard2.name)
   let playerCard2Value = setCardValue(playerCard2)
   playerHandValues.push(playerCard2Value)
 
@@ -67,6 +66,10 @@ const playGame = () => {
   dealerCards.push(dealerCard2.name)
   let dealerCard2Value = setCardValue(dealerCard2)
   dealerHandValues.push(dealerCard2Value)
+
+  // values to hold hand values as they're accumulated
+  let playerHandValue = playerHandValues.reduce((a, b) => a + b, 0)
+  let dealerHandValue = dealerHandValues.reduce((a, b) => a + b, 0)
 
   console.log('**************************************************')
 
@@ -92,7 +95,7 @@ const playGame = () => {
         )
       }
     }
-    if (dealerCard1.name === 'A') {
+    if (dealerCard1.name === 'A') {      
       //
       dealerHandValue = [12]
       console.log('DEALER HAND VALUE: ', dealerHandValue)
@@ -113,6 +116,9 @@ const playGame = () => {
         console.log(
           `MCB_ChatBot's upcard shows ${dealerCard2.name} but doesn't not have Blackjack. Player has ${playerCard1.name}-${playerCard2.name} & draws ${playerCardString} for ${playerHandValue}.  Player BUSTS! Dealer flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
         )
+      } else {
+        console.log('Player Cards: ', playerCards)
+        console.log('Dealer Cards: ', dealerCards)
       }
     }
   }
