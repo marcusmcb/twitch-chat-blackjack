@@ -164,6 +164,8 @@ const playGame = () => {
 
 playGame()
 
+// add seperate blackjack-stats command to show how many times player wins & dealer wins
+// add global vars and increment as counts after "hand" is complete
 
 // dealer stands on soft 17
 //
