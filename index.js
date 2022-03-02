@@ -17,9 +17,11 @@ let deck = [
 // arrays to hold hand data
 let playerCards = []
 let dealerCards = []
+
 // arrays to hold hand values
 let playerHandValues = []
 let dealerHandValues = []
+
 // values to hold card strings to be returned in response
 let playerCardString = ''
 let dealerCardString = ''
@@ -27,12 +29,19 @@ let dealerCardString = ''
 const dealCard = () => {
   const randomIndex = Math.floor(Math.random() * deck.length)
   const card = deck[randomIndex]
-  card.count--
-  console.log('CARD: ', card)
+  card.count--  
   return card
 }
 
-const setCardValue = (cardValue) => {
+const dealPlayerCard = (playerHandValue) => {
+  
+}
+
+const dealDealerCard = (dealerHandValue) => {
+
+}
+
+const setCardValue = (cardValue) => {  
   // need to check player/dealer hand value relative to where each "stands" before setting ace value
   if (cardValue.hasOwnProperty('highValue')) {
     return 11
@@ -41,28 +50,25 @@ const setCardValue = (cardValue) => {
   }
 }
 
-const playGame = () => {
-  let playerCard1 = ''
-  let playerCard2 = ''
-  let dealerCard1 = ''
-  let dealerCard2 = ''
+const playGame = () => {  
+
   // "deal" the cards
-  playerCard1 = dealCard()
+  let playerCard1 = dealCard()
   playerCards.push(playerCard1.name)
   let playerCard1Value = setCardValue(playerCard1)
   playerHandValues.push(playerCard1Value)
 
-  dealerCard1 = deck[0]
+  let dealerCard1 = deck[0]
   dealerCards.push(dealerCard1.name)
   let dealerCard1Value = setCardValue(dealerCard1)
   dealerHandValues.push(dealerCard1Value)
 
-  playerCard2 = dealCard()
+  let playerCard2 = dealCard()
   playerCards.push(playerCard2.name)
   let playerCard2Value = setCardValue(playerCard2)
   playerHandValues.push(playerCard2Value)
 
-  dealerCard2 = deck[0]
+  let dealerCard2 = deck[0]
   dealerCards.push(dealerCard2.name)
   let dealerCard2Value = setCardValue(dealerCard2)
   dealerHandValues.push(dealerCard2Value)
@@ -71,14 +77,15 @@ const playGame = () => {
   let playerHandValue = playerHandValues.reduce((a, b) => a + b, 0)
   let dealerHandValue = dealerHandValues.reduce((a, b) => a + b, 0)
 
+  // logger to see the original cards dealt
   console.log('**************************************************')
-
   console.log(
     `Player has ${playerCard1.name}-${playerCard2.name}, total: ${playerHandValue}.`
   )
   console.log(
     `Dealer has ${dealerCard1.name}-${dealerCard2.name}, total: ${dealerHandValue}.`
   )
+  console.log('--------------------------------------------------')
 
   // check if dealer's upcard is an ace
   if (dealerCard2.name === 'A') {
@@ -96,29 +103,60 @@ const playGame = () => {
       }
     }
     if (dealerCard1.name === 'A') {      
-      //
-      dealerHandValue = [12]
-      console.log('DEALER HAND VALUE: ', dealerHandValue)
-      // set as helper method (one for player, one for dealer)
-      while (playerHandValue <= 17) {
+      // set dealerHandValue to 12 (first Ace = 11 + second Ace = 1)
+      dealerHandValue = [12]                  
+      
+      do {        
         let tempCard = dealCard()
         playerCards.push(tempCard.name)
-        let nextCard = setCardValue(tempCard)
+        let nextCard = 11
+        console.log("NEXTCARD: ", nextCard)  
+        if (nextCard === 11 && playerHandValue <= 10) {
+          console.log("YUUUUUP")
+          // check if playerHandValue = 10 and set A as 11 (player blackjack)
+          // check if playerHandValue < 10 and set A as 11 (player stands on 18+)
+          // check if playerHandValue > 11 and set A as 1 (player draws-to/stands on 18+)
+        }     
+        console.log('--------------------------------------------------')
         playerHandValues.push(nextCard)
-        playerHandValue = playerHandValue + nextCard
-        console.log('PHV: ', playerHandValue)
+        playerHandValue = playerHandValue + nextCard        
+      } while (playerHandValue <= 17) 
+
+      if (playerHandValue === 21) {
+        console.log('Player Cards: ', playerCards)
+        console.log('Player Hand Value: ', playerHandValue)
+        console.log('--------------------------------------------------')
+        console.log('Dealer Cards: ', dealerCards)
+        console.log('Dealer Hand Value: ', dealerHandValue)
+        console.log("BLACKJACK!")
+        playerCardString = playerCards.join('-')
+        console.log('**************************************************') 
+        console.log(
+          `MCB_ChatBot's upcard shows ${dealerCard2.name} but doesn't not have Blackjack. Player has ${playerCard1.name}-${playerCard2.name} & draws ${playerCardString.substring(4)} for ${playerHandValue}: Blackjack! Dealer flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
+        )
       }
+
       if (playerHandValue > 21) {
         console.log('Player Cards: ', playerCards)
+        console.log('Player Hand Value: ', playerHandValue)
+        console.log('--------------------------------------------------')
         console.log('Dealer Cards: ', dealerCards)
-        playerCardString = playerCards.join('-')
-        console.log('PLAYER CARD STRING: ', playerCardString)
+        console.log('Dealer Hand Value: ', dealerHandValue)
+        playerCardString = playerCards.join('-')  
+        console.log('**************************************************')      
         console.log(
-          `MCB_ChatBot's upcard shows ${dealerCard2.name} but doesn't not have Blackjack. Player has ${playerCard1.name}-${playerCard2.name} & draws ${playerCardString} for ${playerHandValue}.  Player BUSTS! Dealer flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
+          `MCB_ChatBot's upcard shows ${dealerCard2.name} but doesn't not have Blackjack. Player has ${playerCard1.name}-${playerCard2.name} & draws ${playerCardString.substring(4)} for ${playerHandValue}. Player BUSTS! Dealer flips over an ${dealerCard1.name} for ${dealerHandValue} points. `
         )
-      } else {
+      } else if (playerHandValue < 21) {
         console.log('Player Cards: ', playerCards)
+        console.log('Player Hand Value: ', playerHandValue)
+        console.log('--------------------------------------------------')
         console.log('Dealer Cards: ', dealerCards)
+        console.log('Dealer Hand Value: ', dealerHandValue)
+        playerCardString = playerCards.join('-') 
+        console.log('**************************************************')
+        console.log("TRUE")
+        // draw cards for dealer hand
       }
     }
   }
@@ -126,11 +164,13 @@ const playGame = () => {
 
 playGame()
 
-// app is not clearing playerCard1/2 & dealerCard 1/2 values on return
-// return in logic check is showing original drawn card values from previous call
 
 // dealer stands on soft 17
 //
+// player hits to 18 on dealer A w/o blackjack
+//
+// player hits/stands according to "basic strategy" based on dealer upcard
+// 
 // dealer upcard is A:
 // * check if dealer has blackjack (if true, compare w/player for possible push)
 // * if false, player hits until 18+
